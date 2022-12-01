@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+from __future__ import print_function
+
 import json
+import six
 import sys
 import time
+
+if six.PY2:
+    FileNotFoundError = IOError
+    json.JSONDecodeError = ValueError
 
 def pokrivanje(n, r=1):
     meja = floor(sqrt((n * (n + 1) * (2*n + 1)) / (r * 6)))
@@ -45,13 +52,13 @@ def pokrivanje(n, r=1):
 def pozeni(n, r=1, podatki=None, datoteka='pokrivanje.json'):
     if podatki is None:
         podatki = {}
-    print(f"pokrivanje({n}, {r})", end=" ")
+    print("pokrivanje(%d, %d)" % (n, r), end=" ")
     sys.stdout.flush()
     start = time.time()
     t, kvadrati = pokrivanje(n, r)
     end = time.time()
     cas = end-start
-    print(f"-> {t}, cas = {cas:.2f}")
+    print("-> %d, cas = %.2f" % (t, cas))
     podatki[n, r] = (t, kvadrati, cas)
     with open(datoteka, "w") as f:
         json.dump([{"n": int(nn), "r": int(rr), "velikost": int(t), "kvadrati": kv, "cas": c}
