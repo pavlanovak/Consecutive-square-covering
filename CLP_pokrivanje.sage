@@ -12,6 +12,8 @@ if six.PY2:
     FileNotFoundError = IOError
     json.JSONDecodeError = ValueError
 
+DATOTEKA = 'pokrivanje.json'
+
 def pokrivanje(n, r=1):
     meja = floor(sqrt((n * (n + 1) * (2*n + 1)) / (r * 6)))
     p = MixedIntegerLinearProgram(maximization=True)
@@ -49,7 +51,7 @@ def pokrivanje(n, r=1):
 
     return (t, KVADRATI)  ## vrne izhodišča kvadratov v optimalni rešitvi
 
-def pozeni(n, r=1, podatki=None, datoteka='pokrivanje.json'):
+def pozeni(n, r=1, podatki=None, datoteka=DATOTEKA):
     if podatki is None:
         podatki = {}
     print("pokrivanje(%d, %d)" % (n, r), end=" ")
@@ -64,7 +66,7 @@ def pozeni(n, r=1, podatki=None, datoteka='pokrivanje.json'):
         json.dump([{"n": int(nn), "r": int(rr), "velikost": int(t), "kvadrati": kv, "cas": c}
                   for (nn, rr), (t, kv, c) in sorted(podatki.items())], f, indent=4)
 
-def preberi_podatke():
+def preberi_podatke(datoteka=DATOTEKA):
     try:
         with open(datoteka) as f:
             podatki = {(d["n"], d["r"]): (d["velikost"], d["kvadrati"], d["cas"]) for d in json.load(f)}
