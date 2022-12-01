@@ -62,7 +62,7 @@ def pozeni(n, r=1, podatki=None, datoteka='pokrivanje.json'):
     podatki[n, r] = (t, kvadrati, cas)
     with open(datoteka, "w") as f:
         json.dump([{"n": int(nn), "r": int(rr), "velikost": int(t), "kvadrati": kv, "cas": c}
-                  for (nn, rr), (t, kv, c) in podatki.items()], f, indent=4)
+                  for (nn, rr), (t, kv, c) in sorted(podatki.items())], f, indent=4)
 
 def preberi_podatke():
     try:
